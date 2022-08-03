@@ -3,13 +3,13 @@ Password and notes manager by [Nick Somsen](mailto:nicksomsen@gmail.com). Writte
 
 ## Functionalities
 - Add new notes by clicking the `Add Note` button
-- Edit/Delete existing notes by clicking on a notes title
+- Edit/Delete existing notes by clicking on a note's title
 - Search trough note title and content, with highlighting
 
 ## Running
-Run PasswordManager by opening/double clicking `PasswordManager.jar`.
+Run PasswordManager by opening/double-clicking `PasswordManager.jar`.
 
-Or via command line: `java -jar PasswordManager.jar`
+Or via command line: `java -jar PasswordManager.jar`, as long as Java versions match.
 
 ## Dependencies (included in `.jar`):
 In `lib` directory:
