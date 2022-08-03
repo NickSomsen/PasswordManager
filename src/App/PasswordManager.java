@@ -209,12 +209,7 @@ public class PasswordManager {
      * @return the edit status
      */
     public UpsertStatus editNote(int noteID, String title, String content) {
-        content = content.strip();
-        if (content.equals("")) {
-            // the user edited the note content to be empty, prompt if the user wants to delete the note
-            return UpsertStatus.NO_CONTENT;
-        }
-        return db.updateNote(new Note(noteID, title.strip(), content, "", getCurrentDate()));
+        return db.updateNote(new Note(noteID, title.strip(), content.strip(), "", getCurrentDate()));
     }
 
     /**

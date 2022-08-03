@@ -36,7 +36,7 @@ public class NewNote extends UpsertNote {
                         "Nothing to save!", "No note content",
                         JOptionPane.INFORMATION_MESSAGE);
                 case FAILED -> JOptionPane.showMessageDialog(this,
-                        "Could not create note.", "Database insert error",
+                        "Could not create note", "Database insert error",
                         JOptionPane.ERROR_MESSAGE);
             }
         } else if (e.getSource() == discardNote) {

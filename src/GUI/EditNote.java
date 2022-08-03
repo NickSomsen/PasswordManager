@@ -21,22 +21,7 @@ public class EditNote extends UpsertNote {
         this.noteID = noteID;
         // sets the JFrame title
         setTitle("Edit Note");
-        discardNote.setText("Close");
-    }
-
-    /**
-     * deletes a note
-     */
-    public void deleteNote() {
-        PasswordManager.UpsertStatus status = passwordManager.deleteNote(noteID);
-        if (status == PasswordManager.UpsertStatus.FAILED) {
-            JOptionPane.showMessageDialog(this,
-                    "Could not delete note", "Database deletion error",
-                    JOptionPane.ERROR_MESSAGE);
-        } else {
-            updatePasswordManagerNotes();
-            dispose();
-        }
+        discardNote.setText("Delete");
     }
 
     @Override
@@ -51,14 +36,29 @@ public class EditNote extends UpsertNote {
                             JOptionPane.INFORMATION_MESSAGE);
                     updatePasswordManagerNotes();
                 }
-                case NO_CONTENT -> {
-                    int reply = JOptionPane.showConfirmDialog(this,
-                            "Nothing to save. Delete note?", "Nothing to save", JOptionPane.YES_NO_OPTION);
-                    if (reply == 0) { deleteNote(); }
-                }
+                case FAILED -> JOptionPane.showMessageDialog(this,
+                        "Could not edit note", "Database update error",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
         } else if (e.getSource() == discardNote) {
+            int reply = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete this note?", "Delete note", JOptionPane.YES_NO_OPTION);
+            if (reply == 0) { deleteNote(); }
+        }
+    }
+
+    /**
+     * deletes a note
+     */
+    public void deleteNote() {
+        PasswordManager.UpsertStatus status = passwordManager.deleteNote(noteID);
+        if (status == PasswordManager.UpsertStatus.FAILED) {
+            JOptionPane.showMessageDialog(this,
+                    "Could not delete note", "Database deletion error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            updatePasswordManagerNotes();
             dispose();
         }
     }
