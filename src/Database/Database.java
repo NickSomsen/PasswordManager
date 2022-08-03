@@ -6,9 +6,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -17,7 +18,9 @@ import java.util.ArrayList;
  */
 public class Database {
 
-    private final String url = "jdbc:sqlite:src/Database/data.db";
+    private final Path DB_LOCATION = Paths.get(System.getProperty("user.home"), ".passwordmanager");
+    private final String DB_NAME = "data.db";
+    private final String URL = "jdbc:sqlite:////" + Paths.get(DB_LOCATION.toString(), DB_NAME);
     private JSONObject jsonObject;
 
     public Database() {
@@ -30,7 +33,7 @@ public class Database {
      * @throws SQLException database error
      */
     public Connection makeConnection() throws SQLException {
-        return DriverManager.getConnection(url);
+        return DriverManager.getConnection(URL);
     }
 
     /**
@@ -46,10 +49,12 @@ public class Database {
      * gets all database queries from a json file
      */
     private void getQueries() {
-        JSONParser jsonParser = new JSONParser();
-        String queryFile = "src/Database/create_db.json";
+        String queryFile = "/Database/create_db.json";
         try {
-            Object obj = jsonParser.parse(new FileReader(queryFile));
+            JSONParser jsonParser = new JSONParser();
+            // an InputStreamReader is used so that the file can also be read when run from a jar file
+            InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(queryFile), StandardCharsets.UTF_8);
+            Object obj = jsonParser.parse(reader);
             jsonObject = (JSONObject) obj;
         } catch (ParseException e) {
             System.out.println("Error when parsing '" + queryFile + "'.");
@@ -64,10 +69,13 @@ public class Database {
      * creates the SQLite database if it doesn't exist yet
      */
     public void createDatabase() {
-        // get the database file name from the url to check if the database exists
-        String dbName = url.substring(url.lastIndexOf(':') + 1);
+        // check if the database directory exists
+        File dir = new File(String.valueOf(DB_LOCATION));
+        if (!dir.exists()) dir.mkdir();
 
-        File f = new File(dbName);
+        // get the database file path from the url to check if the database exists
+        String dbPath = Paths.get(DB_LOCATION.toString(), DB_NAME).toString();
+        File f = new File(dbPath);
         try {
             if (f.createNewFile()) {
                 // the database file did not exist yet; it has been created. Now, create the "note" table.
@@ -83,7 +91,7 @@ public class Database {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Couldn't create database file '" + dbName + "'.");
+            System.out.println("Couldn't create database file '" + dbPath + "'.");
             e.printStackTrace();
         }
     }

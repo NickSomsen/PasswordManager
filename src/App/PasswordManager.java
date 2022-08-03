@@ -49,14 +49,10 @@ public class PasswordManager {
      */
     public PasswordManager(PasswordManagerGUI passwordManagerGUI) {
         this.passwordManagerGUI = passwordManagerGUI;
-        createDatabase();
+        // create the database if it doesn't exist already
+        db.createDatabase();
         retrieveNotes();
     }
-
-    /**
-     * creates the database if it doesn't exist already
-     */
-    public void createDatabase() { db.createDatabase(); }
 
     /**
      * retrieves all notes from the database
