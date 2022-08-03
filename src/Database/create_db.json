@@ -1,5 +1,5 @@
 {
-  "note_table": "create table note (ID integer not null primary key autoincrement, title text not null, content text not null, create_date text not null, last_mod_date text not null);",
+  "note_table": "create table note (ID integer not null primary key autoincrement, title text not null, content text not null, create_date int not null, last_mod_date int not null);",
   "new_note": "insert into note (title, content, create_date, last_mod_date) values (?, ?, ?, ?)",
   "update_note": "update note set title = ?, content = ?, last_mod_date = ? where ID = ?",
   "delete_note": "delete from note where ID = ?"

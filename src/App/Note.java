@@ -5,6 +5,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 /**
@@ -15,19 +16,20 @@ public class Note {
     private final int id;
     private final String title;
     private final String content;
-    private final String createDate;
-    private final String lastModDate;
+    private final long createDate;
+    private final long lastModDate;
     private final Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.pink);
+    private final SimpleDateFormat simpleFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
 
     /**
      * Constructor
      * @param id the ID of the note in the database
      * @param title the note title
      * @param content the note content
-     * @param createDate the note creation date
-     * @param lastModDate the note last modification date
+     * @param createDate the note creation date in milliseconds since January 1, 1970, 00:00:00 GMT
+     * @param lastModDate the note last modification date in milliseconds since January 1, 1970, 00:00:00 GMT
      */
-    public Note(int id, String title, String content, String createDate, String lastModDate) {
+    public Note(int id, String title, String content, long createDate, long lastModDate) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -64,17 +66,31 @@ public class Note {
     }
 
     /**
-     * @return the note create date
+     * @return the note creation date in milliseconds since January 1, 1970, 00:00:00 GMT
      */
-    public String getCreateDate() {
+    public long getCreateStamp() {
         return createDate;
     }
 
     /**
-     * @return the note last modification date
+     * @return the note last modification date in milliseconds since January 1, 1970, 00:00:00 GMT
+     */
+    public long getLastModStamp() {
+        return lastModDate;
+    }
+
+    /**
+     * @return the note create date in "dd MMM yyyy HH:mm" format
+     */
+    public String getCreateDate() {
+        return simpleFormat.format(createDate);
+    }
+
+    /**
+     * @return the note last modification date in "dd MMM yyyy HH:mm" format
      */
     public String getLastModDate() {
-        return lastModDate;
+        return simpleFormat.format(lastModDate);
     }
 
     /**

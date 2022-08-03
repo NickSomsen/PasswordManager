@@ -64,8 +64,8 @@ public class PasswordManager {
     public void retrieveNotes() {
         notes = db.retrieveNotes();
         if (notes != null) {
-            // sort the notes so that the last edited notes are listed first
-            notes.sort(Comparator.comparing(Note::getLastModDate).reversed());
+            // sort the notes so that the last edited notes are listed first (with the highest LastModStamp)
+            notes.sort(Comparator.comparing(Note::getLastModStamp).reversed());
         }
     }
 
@@ -186,18 +186,17 @@ public class PasswordManager {
             return UpsertStatus.NO_CONTENT;
         }
 
-        String date = getCurrentDate();
+        long date = getCurrentDate();
         return db.insertNewNote(new Note(-1, title.strip(), content, date, date));
     }
 
     /**
-     * gets the current date and time in "dd MMM yyyy HH:mm" format
-     * @return the date
+     * gets the current datetime in number of milliseconds since the standard base time known as "the epoch",
+     * namely January 1, 1970, 00:00:00 GMT.
+     * @return the datetime stamp
      */
-    public String getCurrentDate() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
-        return simpleFormat.format(cal.getTime());
+    public long getCurrentDate() {
+        return Calendar.getInstance().getTimeInMillis();
     }
 
     /**
@@ -209,7 +208,7 @@ public class PasswordManager {
      * @return the edit status
      */
     public UpsertStatus editNote(int noteID, String title, String content) {
-        return db.updateNote(new Note(noteID, title.strip(), content.strip(), "", getCurrentDate()));
+        return db.updateNote(new Note(noteID, title.strip(), content.strip(), -1, getCurrentDate()));
     }
 
     /**

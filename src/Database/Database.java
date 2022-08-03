@@ -106,8 +106,8 @@ public class Database {
                         results.getInt("ID"),
                         results.getString("title"),
                         results.getString("content"),
-                        results.getString("create_date"),
-                        results.getString("last_mod_date")));
+                        results.getLong("create_date"),
+                        results.getLong("last_mod_date")));
             }
 
             closeConnection(connection);
@@ -133,8 +133,8 @@ public class Database {
             PreparedStatement statement = connection.prepareStatement(newNoteQuery);
             statement.setString(1, note.getTitle());
             statement.setString(2, note.getContent());
-            statement.setString(3, note.getCreateDate());
-            statement.setString(4, note.getLastModDate());
+            statement.setLong(3, note.getCreateStamp());
+            statement.setLong(4, note.getLastModStamp());
             statement.execute();
             closeConnection(connection);
         } catch (SQLException e) {
@@ -160,7 +160,7 @@ public class Database {
             PreparedStatement statement = connection.prepareStatement(updateNoteQuery);
             statement.setString(1, note.getTitle());
             statement.setString(2, note.getContent());
-            statement.setString(3, note.getLastModDate());
+            statement.setLong(3, note.getLastModStamp());
             statement.setInt(4, note.getId());
             statement.execute();
             closeConnection(connection);
