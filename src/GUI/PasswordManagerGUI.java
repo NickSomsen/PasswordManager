@@ -21,6 +21,7 @@ public class PasswordManagerGUI extends JFrame implements ActionListener {
     private JTextField searchInput;
     private JButton addNote;
     private JPanel resultPanel;
+    private final JLabel appLabel = new JLabel("Password and notes manager");
 
     public static void main(String[] args) {
         new PasswordManagerGUI();
@@ -53,7 +54,6 @@ public class PasswordManagerGUI extends JFrame implements ActionListener {
         mainContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(mainContainer);
 
-        JLabel appLabel = new JLabel("Password and notes manager");
         appLabel.setBorder(new EmptyBorder(0, 0, 5, 0));
         appLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         mainContainer.add(appLabel);
@@ -107,10 +107,12 @@ public class PasswordManagerGUI extends JFrame implements ActionListener {
             for (JPanel notePane : notePanes) {
                 resultPanel.add(notePane);
             }
+            appLabel.setText("Password and notes manager (" + notePanes.size() + " notes)");
         } else {
             JOptionPane.showMessageDialog(this,
                     "Could not retrieve notes from the database.", "Database retrieval error",
                     JOptionPane.ERROR_MESSAGE);
+            appLabel.setText("Password and notes manager");
         }
 
         // since components were added and removed, validate() and repaint() the frame to update the GUI
