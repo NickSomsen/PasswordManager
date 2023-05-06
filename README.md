@@ -1,6 +1,10 @@
 # Password manager
 Password and notes manager by [Nick Somsen](mailto:nicksomsen@gmail.com). Written completely in Java (Java Runtime class file version 62.0), only tested on Windows.
 
+![screenshot](screenshot.png)
+
+**Note:** Not meant for storing sensitive information; notes are saved in `~/.passwordmanager` in plain text.
+
 ## Functionalities
 - Add new notes by clicking the `Add Note` button
 - Edit/Delete existing notes by clicking on a note's title
